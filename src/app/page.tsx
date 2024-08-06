@@ -3,27 +3,25 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getAnswer } from './actions';
+import { generate } from './actions';
+import { readStreamableValue } from 'ai/rsc';
+
 
 export default function Home() {
   const [prompt, setPrompt] = useState('')
-  const [response, setResponse] = useState('')
+  const [generation, setGeneration] = useState<string>('');
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    getAnswer('Why is the sky blue?')
-    // const res = await fetch('/api/generate', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ prompt }),
-    // })
-    // const data = await res.json()
-    const { text } = await getAnswer('Why is the sky blue?');
-    setResponse(text)
+    // getAnswer('Why is the sky blue?')
+    // const { text } = await getAnswer('Why is the sky blue?');
+    // setResponse(text)
+    const { output } = await generate('Why is the sky blue?');
+    for await (const delta of readStreamableValue(output)) {
+      setGeneration(currentGeneration => `${currentGeneration}${delta}`);
+    }
     setLoading(false)
   }
 
@@ -42,10 +40,10 @@ export default function Home() {
           {loading ? 'Generating...' : 'Generate'}
         </Button>
       </form>
-      {response && (
+      {generation && (
         <div className="mt-8 p-4 bg-muted rounded-lg w-full max-w-md">
           <h2 className="text-xl font-semibold mb-2">AI Response:</h2>
-          <p>{response}</p>
+          <p>{generation}</p>
         </div>
       )}
     </main>
