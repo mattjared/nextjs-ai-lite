@@ -1,51 +1,59 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { generate } from './actions';
-import { readStreamableValue } from 'ai/rsc';
+import { useState } from 'react';
+import { Message, continueConversation } from './actions';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
+// Allow streaming responses up to 30 seconds
+export const maxDuration = 30;
 
 export default function Home() {
-  const [prompt, setPrompt] = useState('')
-  const [generation, setGeneration] = useState<string>('');
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // getAnswer('Why is the sky blue?')
-    // const { text } = await getAnswer('Why is the sky blue?');
-    // setResponse(text)
-    const { output } = await generate('Why is the sky blue?');
-    for await (const delta of readStreamableValue(output)) {
-      setGeneration(currentGeneration => `${currentGeneration}${delta}`);
-    }
-    setLoading(false)
-  }
+  const [conversation, setConversation] = useState<Message[]>([]);
+  const [input, setInput] = useState<string>('');
 
   return (
-    <main className="flex flex-col items-center justify-center pt-60 p-24">
-      <h1 className="text-4xl font-bold mb-8">Next AI SDK Lite</h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-        <Input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your prompt"
-          className="w-full"
-        />
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? 'Generating...' : 'Generate'}
-        </Button>
-      </form>
-      {generation && (
-        <div className="mt-8 p-4 bg-muted rounded-lg w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">AI Response:</h2>
-          <p>{generation}</p>
+    <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden pb-10">
+      <div className="group w-full overflow-auto">
+        <div className="bg-white rounded p-10 max-w-xl mx-auto">
+          <h1 className="text-lg font-semibold mb-8">Next AI SDK Lite</h1>
+          <p>A simplified AI chatbot focused on speed to learning, wins and deployment.</p>
+          <p>To edit this chatbot</p>
         </div>
-      )}
-    </main>
-  )
+        <div className="max-w-xl">
+          {conversation.map((message, index) => (
+            <div key={index}>
+              {message.role}: {message.content}
+              {message.display}
+            </div>
+          ))}
+        </div>
+        <div className="fixed inset-x-0 bottom-0 w-full">
+          <div className="w-full max-w-lg space-y-4 mx-auto">
+            <Input
+              type="text"
+              value={input}
+              onChange={event => {
+                setInput(event.target.value);
+              }}
+              className="w-full"
+            />
+            <Button
+              className="w-full"
+              onClick={async () => {
+                const { messages } = await continueConversation([
+                  ...conversation.map(({ role, content }) => ({ role, content })),
+                  { role: 'user', content: input },
+                ]);
+                setConversation(messages);
+                setInput("");
+              }}
+            >
+              Send Message
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

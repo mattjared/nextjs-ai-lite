@@ -19,8 +19,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        {children}
+        <main className="bg-muted/50 flex h-100vh flex-1 flex-col">
+          {children}
+        </main>
       </body>
     </html>
   );
 }
+
+// className="flex flex-col items-center justify-center pt-60 p-24"
