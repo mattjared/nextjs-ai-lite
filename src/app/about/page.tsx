@@ -1,4 +1,4 @@
-export default function FAQs() {
+export default function About() {
   return (
     <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden pb-10">
       <div className="group w-full overflow-auto">
