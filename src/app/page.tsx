@@ -18,21 +18,26 @@ export default function Home() {
   return (
     <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden pb-10">
       <div className="group w-full overflow-auto">
-        <div className="bg-white rounded p-10 max-w-xl mx-auto">
-          <h1 className="text-lg font-semibold mb-8">Next AI SDK Lite</h1>
-          <p>A simplified AI chatbot focused on speed to learning, wins and deployment.</p>
-          <p>To edit this chatbot</p>
-        </div>
-        <div className="max-w-xl mx-auto">
-          {messages.map((message, index) => (
-            <div key={index} className="whitespace-pre-wrap">
-              {message.role === 'user' ? 'User: ' : 'Bot: '}
-              {message.content as string}
-            </div>
-          ))}
-        </div>
-        <div className="fixed inset-x-0 bottom-0 w-full">
-          <div className="w-full max-w-lg space-y-4 mx-auto">
+        {messages.length === 0 && (
+          <div className="bg-white rounded-lg max-w-xl mx-auto p-5 mt-10 border">
+            <h1 className="text-lg font-semibold mb-8">Next AI SDK Lite</h1>
+            <p>A simplified AI chatbot focused on speed to learning, wins and deployment.</p>
+            <p>To edit this chatbot</p>
+          </div>
+        )}
+        {messages.length > 0 && (
+          <div className="max-w-xl mx-auto mt-10 mb-24 shadow-sm">
+            {messages.map((message, index) => (
+              <div key={index} className="whitespace-pre-wrap flex mb-5">
+                <div className={`${message.role === 'user' ? 'bg-slate-200 ml-auto' : 'bg-transparent'} p-2 rounded-lg`}>
+                  {message.content as string}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="fixed inset-x-0 bottom-10 w-full ">
+          <div className="w-full max-w-xl mx-auto px-5 py-2 bg-white border shadow-sm rounded-lg">
             <form
               onSubmit={async e => {
                 e.preventDefault();
@@ -40,12 +45,9 @@ export default function Home() {
                   ...messages,
                   { content: input, role: 'user' },
                 ];
-
                 setMessages(newMessages);
                 setInput('');
-
                 const result = await continueConversation(newMessages);
-
                 for await (const content of readStreamableValue(result)) {
                   setMessages([
                     ...newMessages,
@@ -64,7 +66,8 @@ export default function Home() {
                 onChange={event => {
                   setInput(event.target.value);
                 }}
-                className="w-full"
+                className="w-[95%] mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:ring-0 ring-0 border-transparent focus:border-transparent"
+                placeholder='Ask me anything...'
               />
               <Button>
                 <IconArrowUp />

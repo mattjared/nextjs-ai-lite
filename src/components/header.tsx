@@ -9,8 +9,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between w-full h-16 px-4 border-b shrink-0 bg-white ">
       <Link href="/" rel="nofollow" className="mr-5">
-        <IconNextChat className="size-6 dark:hidden" inverted />
-        <IconNextChat className="hidden size-6 dark:block" />
+        Next.js AI Chatbot Lite
       </Link>
       <IconSeparator className='hidden md:flex' />
       <Link
