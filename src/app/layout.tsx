@@ -26,5 +26,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// className="flex flex-col items-center justify-center pt-60 p-24"
