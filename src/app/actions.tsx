@@ -2,7 +2,7 @@
 
 import { createStreamableValue } from 'ai/rsc';
 import { CoreMessage, streamText } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { openai, createOpenAI } from '@ai-sdk/openai';
 
 export async function continueConversation(messages: CoreMessage[]) {
   const result = await streamText({
@@ -12,6 +12,16 @@ export async function continueConversation(messages: CoreMessage[]) {
 
   const stream = createStreamableValue(result.textStream);
   return stream.value;
+}
+
+export async function checkAIAvailability() {
+  // const openai = createOpenAI({
+  // // custom settings, e.g.
+  //   compatibility: 'strict', // strict mode, enable when using the OpenAI API
+  // });
+  const envVar = process.env.OPENAI_API_KEY
+  // console.log(envVar);
+  return openai;
 }
 
 
