@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -20,29 +19,60 @@ export const maxDuration = 30;
 
 export default function Chat() {
   const [messages, setMessages] = useState<CoreMessage[]>([]);
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>('');  
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const newMessages: CoreMessage[] = [
+      ...messages,
+      { content: input, role: 'user' },
+    ];
+    setMessages(newMessages);
+    setInput('');
+    const result = await continueConversation(newMessages);
+    for await (const content of readStreamableValue(result)) {
+      setMessages([
+        ...newMessages,
+        {
+          role: 'assistant',
+          content: content as string, 
+        },
+      ]);
+    }
+  }
+
+  const resetChat = () => {
+    setMessages([]);
+    setInput("");
+  }
   return (    
-    <div className="group w-full overflow-auto">
-      {messages.length === 0 && (
+    <div className="group w-full overflow-auto ">
+      {messages.length > 1 ? (
         <div className="max-w-xl mx-auto mt-20">
-          <Card>
+          <Card >
             <CardHeader>
               <CardTitle>Next AI SDK Lite</CardTitle>
               <CardDescription>A no bells or whistles AI starter kit</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>A simplified Next.js AI starter kit designed with simplicity and wins in mind.</p>
-              <p>See to <Link href="/about" className="underline">about page</Link> for complete documentation</p>
+            <CardContent className="text-sm text-muted-foreground/90 leading-normal"> 
+              <p className="mb-3">A simplified Next.js AI starter kit designed with simplicity and speed in mind.</p>
+              <p className="mb-3">Built with Next.js, AI SDK, Tailwind, Shadcn you can build a bare minimum AI Chatbot with extremely low overhead. Based off the popular <Link href="https://chat.vercel.ai/">Next AI Chatbot</Link> as the gold standard the aim for this project is to remove any dependency outside of basic functionality and examples with an emphasis on making changes and customizations to the AI SDK as possible. </p>
+              <p className="mb-3 font-semibold">Quick start guide:</p>
+              <ul className="flex">
+                <li><pre className="bg-slate-200 p-1 rounded">git clone https://github.com/mattjared/nextjs-ai-lite</pre></li>
+              </ul>
+              <p>See to <Link href="/about" className="underline">about page</Link> for complete documentation and examples</p>
             </CardContent>
           </Card>
-          <div className="bg-white rounded-lg max-w-xl mx-auto p-5 mt-10 border">
-          <h1 className="text-lg font-semibold mb-8">Next AI SDK Lite</h1>
-          <p>A simplified AI chatbot focused on speed to learning, wins and deployment.</p>
-          <p>To edit this chatbot</p>
         </div>
+      ) : (
+        <div className="max-w-xl mx-auto mt-10 flex justify-center gap-4">
+            <Button variant={"opaque"} size={"xs"} className="flex">
+              <div className="font-bold">What is</div> is the price of $DOGE?
+            </Button>
+            <Button variant={"outline"} size={"xs"} onClick={resetChat}>Reset Chat</Button>
         </div>
       )}
-      
       {messages.length > 0 && (
         <div className="max-w-xl mx-auto mt-10 mb-24">
           {messages.map((message, index) => (
@@ -57,27 +87,7 @@ export default function Chat() {
       <div className="fixed inset-x-0 bottom-10 w-full ">
         <div className="w-full max-w-xl mx-auto">
           <Card className="p-2">
-            <form
-              onSubmit={async e => {
-                e.preventDefault();
-                const newMessages: CoreMessage[] = [
-                  ...messages,
-                  { content: input, role: 'user' },
-                ];
-                setMessages(newMessages);
-                setInput('');
-                const result = await continueConversation(newMessages);
-                for await (const content of readStreamableValue(result)) {
-                  setMessages([
-                    ...newMessages,
-                    {
-                      role: 'assistant',
-                      content: content as string, 
-                    },
-                  ]);
-                }
-              }}
-            >
+            <form onSubmit={handleSubmit}>
             <div className="flex">
               <Input
                 type="text"
