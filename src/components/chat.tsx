@@ -47,7 +47,8 @@ export default function Chat() {
   }
   return (    
     <div className="group w-full overflow-auto ">
-      <div className="max-w-xl mx-auto mt-20">
+      {messages.length <= 0 ? ( 
+      <div className="max-w-xl mx-auto mt-10">
         <Card >
           <CardHeader>
             <CardTitle>Next AI SDK Lite</CardTitle>
@@ -57,16 +58,17 @@ export default function Chat() {
             <p className="mb-3">A simplified Next.js AI starter kit designed with simplicity and speed in mind.</p>
             <p className="mb-3">Built with Next.js, AI SDK, Tailwind, Shadcn you can build a bare minimum AI Chatbot with extremely low overhead. Based off the popular <Link href="https://chat.vercel.ai/">Next AI Chatbot</Link> as the gold standard the aim for this project is to remove any dependency outside of basic functionality and examples with an emphasis on making changes and customizations to the AI SDK as possible. </p>
             <p className="mb-3 font-semibold">Big Opinions:</p>
-            <ul className="flex">
+            <ul className="flex flex-col mb-2">
               <li>→ Speed to learning and experimenting AI SDK</li>
-              <li>→ Latest and greatest Next.js (App Router, Server Actions, React Server Components)</li>
+              <li>→ Latest Next.js (App Router, Server Actions, React Server Components)</li>
+              <li>→ No auth or storage, AI only</li>
               <li></li>
             </ul>
             <p>See to <Link href="/about" className="underline">about page</Link> for complete documentation and examples</p>
           </CardContent>
         </Card>
-      </div>
-      {messages.length > 0 && (
+      </div>) 
+      : (
         <div className="max-w-xl mx-auto mt-10 mb-24">
           {messages.map((message, index) => (
             <div key={index} className="whitespace-pre-wrap flex mb-5">

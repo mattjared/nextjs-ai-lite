@@ -15,13 +15,8 @@ export async function continueConversation(messages: CoreMessage[]) {
 }
 
 export async function checkAIAvailability() {
-  // const openai = createOpenAI({
-  // // custom settings, e.g.
-  //   compatibility: 'strict', // strict mode, enable when using the OpenAI API
-  // });
-  const envVar = process.env.OPENAI_API_KEY
-  // console.log(envVar);
-  return openai;
+  const envVarExists = !!process.env.OPENAI_API_KEY;
+  return envVarExists;
 }
 
 
