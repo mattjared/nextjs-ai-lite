@@ -40,11 +40,7 @@ export default function Chat() {
       ]);
     }
   }
-
-  const resetChat = () => {
-    setMessages([]);
-    setInput("");
-  }
+  
   return (    
     <div className="group w-full overflow-auto ">
       {messages.length <= 0 ? ( 
