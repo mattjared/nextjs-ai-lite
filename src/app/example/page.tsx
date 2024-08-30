@@ -15,7 +15,7 @@ export default function Example() {
           setComponent(await streamComponent());
         }}
       >
-        <button>Stream Component</button>
+        <button className="bg-red-300">Click to Stream Component</button>
       </form>
       <div>{component}</div>
     </div>
