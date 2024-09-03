@@ -79,20 +79,25 @@ export default function Chat() {
         <div className="w-full max-w-xl mx-auto">
           <Card className="p-2">
             <form onSubmit={handleSubmit}>
-            <div className="flex">
-              <Input
-                type="text"
-                value={input}
-                onChange={event => {
-                  setInput(event.target.value);
-                }}
-                className="w-[95%] mr-2 border-0 ring-offset-0 focus-visible:ring-0 focus-visible:outline-none focus:outline-none focus:ring-0 ring-0 focus-visible:border-none border-transparent focus:border-transparent focus-visible:ring-none"
-                placeholder='Ask me anything...'
-              />
-              <Button disabled={!input.trim()}>
-                <IconArrowUp />
-              </Button>
-            </div>
+              <div className="flex">
+                <Input
+                  type="text"
+                  value={input}
+                  onChange={event => {
+                    setInput(event.target.value);
+                  }}
+                  className="w-[95%] mr-2 border-0 ring-offset-0 focus-visible:ring-0 focus-visible:outline-none focus:outline-none focus:ring-0 ring-0 focus-visible:border-none border-transparent focus:border-transparent focus-visible:ring-none"
+                  placeholder='Ask me anything...'
+                />
+                <Button disabled={!input.trim()}>
+                  <IconArrowUp />
+                </Button>
+              </div>
+              {messages.length > 3 && (
+                <div className="text-center">
+                  <Link href="/example" className="text-xs text-blue-400">Try GenUI and streaming component &rarr;</Link>
+                </div>
+              )}
             </form>
           </Card>
         </div>
