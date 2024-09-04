@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 // import { Message, continueConversation } from './actions';
-// import { Message, continueConversation } from '../actions-genui';
-import { Message, continueConversation } from '@/app/actions-genui';
+import { continueConversation, Message } from '@/app/actions-genui';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;

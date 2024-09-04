@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import WeatherForecast from "@/components/weather";
 import  Link from "next/link";
 
 export default function About() {
@@ -12,6 +13,7 @@ export default function About() {
     <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden pb-10">
       <div className="group w-full overflow-auto">
         <div className="max-w-xl mx-auto">
+            <WeatherForecast />
             <Card className="mt-20">
               <CardHeader>
                 <CardTitle>Next AI SDK Lite</CardTitle>

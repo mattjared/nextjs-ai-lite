@@ -30,7 +30,7 @@ export async function continueConversation(history: Message[]) {
             .describe('The unit to display the temperature in'),
         }),
         execute: async ({ city, unit }) => {
-          stream.done(<Weather />);
+          stream.done(<Weather city={city} unit={unit} />);
           return `Here's the weather for ${city}!`;
         },
       },
