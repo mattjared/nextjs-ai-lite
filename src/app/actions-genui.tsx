@@ -6,6 +6,7 @@ import { openai } from '@ai-sdk/openai';
 import { createStreamableUI } from 'ai/rsc';
 import { ReactNode } from 'react';
 import { z } from 'zod';
+import { headers } from 'next/headers';
 
 export interface Message {
   role: 'user' | 'assistant';
@@ -26,12 +27,12 @@ export async function continueConversation(history: Message[]) {
         parameters: z.object({
           city: z.string().describe('The city to show the weather for.'),
           unit: z
-            .enum(['C', 'F'])
+            .enum(['F'])
             .describe('The unit to display the temperature in'),
         }),
         execute: async ({ city, unit }) => {
           stream.done(<Weather city={city} unit={unit} />);
-          return `Here's the weather for ${city}!`;
+          return `Here's the weather for ${city}!`; 
         },
       },
     },

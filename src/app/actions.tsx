@@ -13,8 +13,3 @@ export async function continueConversation(messages: CoreMessage[]) {
   const stream = createStreamableValue(result.textStream);
   return stream.value;
 }
-
-export async function checkAIAvailability() {
-  const envVarExists = !!process.env.OPENAI_API_KEY;
-  return envVarExists;
-}
