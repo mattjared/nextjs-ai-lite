@@ -10,7 +10,6 @@ import { IconArrowUp } from '@/components/ui/icons';
 import GenUICard from '@/components/cards/genuicard';
 export const maxDuration = 30;
 
-
 export default function GenUI() {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
