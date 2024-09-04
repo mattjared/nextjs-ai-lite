@@ -1,4 +1,4 @@
-import { checkAIAvailability } from "@/app/actions";
+import { checkAIAvailability } from "@/app/actions-utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default async function EnvCard() {
