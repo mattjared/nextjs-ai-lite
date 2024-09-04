@@ -34,8 +34,15 @@ interface Forecast {
 }
 
 export async function Weather({ city, unit }: WeatherProps) {
-  const lat = '30.2672';
-  const long = '-97.7431';
+  'use client';
+  const getLatLong = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
+  const getLatLongData = await getLatLong.json()
+  const lat = getLatLongData[0].lat;
+  const long = getLatLongData[0].lon;
+  // console.log(data[0].lat);
+  // console.log(data[0].lon);
+  // const lat = '30.2672';
+  // const long = '-97.7431';
   const pointResponse = await fetch(`https://api.weather.gov/points/${lat},${long}`)
   if (!pointResponse.ok) throw new Error('Failed to fetch weather point')
   const pointData: WeatherPoint = await pointResponse.json()
@@ -47,12 +54,6 @@ export async function Weather({ city, unit }: WeatherProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })
   }
-
-  // const fullForecastData =  {
-  //   location: `${pointData.properties.relativeLocation.properties.city}, ${pointData.properties.relativeLocation.properties.state}`,
-  //   forecast: forecastData.properties.periods
-  // }
-  
 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
