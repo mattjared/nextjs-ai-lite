@@ -3,13 +3,13 @@
 import { Card } from "@/components/ui/card"
 import { type CoreMessage } from 'ai';
 import { useState } from 'react';
-import { continueConversation } from '@/app/actions';
+import { continueTextConversation } from '@/app/actions';
 import { readStreamableValue } from 'ai/rsc';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { IconArrowUp } from '@/components/ui/icons';
 import  Link from "next/link";
-import AboutCard from "@/components/aboutcard";
+import AboutCard from "@/components/cards/aboutcard";
 export const maxDuration = 30;
 
 export default function Chat() {
@@ -24,7 +24,7 @@ export default function Chat() {
     ];
     setMessages(newMessages);
     setInput('');
-    const result = await continueConversation(newMessages);
+    const result = await continueTextConversation(newMessages);
     for await (const content of readStreamableValue(result)) {
       setMessages([
         ...newMessages,

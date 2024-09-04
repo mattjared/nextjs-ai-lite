@@ -2,9 +2,8 @@ import * as React from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
-import { IconVercel } from './ui/icons'
-import EnvCard from './envcard'
-
+import { IconSeparator, IconVercel } from '@/components/ui/icons'
+import EnvCard from './cards/envcard'
 
 export async function Header() {
   return (
@@ -13,11 +12,12 @@ export async function Header() {
       <Link href="/" rel="nofollow" className="mr-2 font-bold">
         Next.js AI Lite
       </Link>
+      <IconSeparator />
       <Link
-        href="/about"
+        href="/genui"
         className={cn(buttonVariants({ variant: 'link' }), "mr-auto font-normal")}
       >
-        <span className="hidden md:flex">About</span>
+        <span className="hidden md:flex">GenUI</span>
       </Link>
       <Link
         href="https://vercel.com/new"
