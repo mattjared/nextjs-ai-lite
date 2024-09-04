@@ -6,10 +6,11 @@ export function middleware(request: NextRequest) {
   
   const geo = request.geo
 
-  response.headers.set('x-vercel-ip-country', geo?.country ?? 'Unknown')
-  response.headers.set('x-vercel-ip-city', geo?.city ?? 'Unknown')
-  response.headers.set('x-vercel-ip-latitude', geo?.latitude ?? 'Unknown')
-  response.headers.set('x-vercel-ip-longitude', geo?.longitude ?? 'Unknown')
+  // Use real data if available, otherwise use mock data
+  response.headers.set('x-vercel-ip-country', geo?.country ?? 'MockCountry')
+  response.headers.set('x-vercel-ip-city', geo?.city ?? 'MockCity')
+  response.headers.set('x-vercel-ip-latitude', geo?.latitude ?? '40.7128')
+  response.headers.set('x-vercel-ip-longitude', geo?.longitude ?? '-74.0060')
 
   return response
 }

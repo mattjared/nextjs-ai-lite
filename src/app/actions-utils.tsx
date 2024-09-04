@@ -2,35 +2,15 @@
 
 import { headers } from 'next/headers'
 
-interface GeoData {
-  latitude: string | undefined;
-  longitude: string | undefined;
-}
-
-export async function getGeoLocation(): Promise<GeoData> {
+export async function getGeoLocation() {
   const headersList = headers()
   
-  // Check if we're running on Vercel
-  const isVercel = process.env.VERCEL === '1'
+  const country = headersList.get('x-vercel-ip-country') || 'Unknown'
+  const city = headersList.get('x-vercel-ip-city') || 'Unknown'
+  const latitude = headersList.get('x-vercel-ip-latitude') || 'Unknown'
+  const longitude = headersList.get('x-vercel-ip-longitude') || 'Unknown'
 
-  if (isVercel) {
-    // We're on Vercel, use the geolocation headers
-    const latitude = headersList.get('x-vercel-ip-latitude') || undefined
-    const longitude = headersList.get('x-vercel-ip-longitude') || undefined
-    return { latitude, longitude }
-  } else {
-    // We're running locally, return mock data or fetch from an external service
-    return getMockOrLocalGeoData()
-  }
-}
-
-function getMockOrLocalGeoData(): GeoData {
-  // You can replace this with actual logic to get local IP geolocation
-  // For now, we'll just return mock data
-  return {
-    latitude: '40.7128',
-    longitude: '-74.0060'
-  }
+  return { country, city, latitude, longitude }
 }
 
 export async function checkAIAvailability() {
