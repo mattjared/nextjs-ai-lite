@@ -3,11 +3,13 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { IconVercel } from './ui/icons'
+import EnvCard from './envcard'
 
 
-export function Header() {
+export async function Header() {
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between w-full h-16 px-4 border-b shrink-0 bg-white ">  
+      <EnvCard />
       <Link href="/" rel="nofollow" className="mr-2 font-bold">
         Next.js AI Lite
       </Link>

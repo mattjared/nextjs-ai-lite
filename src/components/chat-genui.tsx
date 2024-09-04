@@ -6,6 +6,7 @@ import { Card } from './ui/card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { IconArrowUp } from './ui/icons';
+import GenUICard from './genuicard';
 
 export const maxDuration = 30;
 
@@ -16,6 +17,9 @@ export default function Home() {
   return (
     <div className="group w-full overflow-auto">
       <div className="max-w-xl mx-auto mt-10 mb-24">
+        {conversation.length <=0 && (
+          <GenUICard />
+        )}
         {conversation.map((message, index) => (
           <div key={index} className="whitespace-pre-wrap flex mb-5">
             <div className={`${message.role === 'user' ? 'bg-slate-200 ml-auto' : 'bg-transparent'} p-2 rounded-lg`}>

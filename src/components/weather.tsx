@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-
 interface WeatherProps {
   city: string;
   unit: 'celsius' | 'fahrenheit';
@@ -34,15 +30,10 @@ interface Forecast {
 }
 
 export async function Weather({ city, unit }: WeatherProps) {
-  'use client';
   const getLatLong = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
   const getLatLongData = await getLatLong.json()
   const lat = getLatLongData[0].lat;
   const long = getLatLongData[0].lon;
-  // console.log(data[0].lat);
-  // console.log(data[0].lon);
-  // const lat = '30.2672';
-  // const long = '-97.7431';
   const pointResponse = await fetch(`https://api.weather.gov/points/${lat},${long}`)
   if (!pointResponse.ok) throw new Error('Failed to fetch weather point')
   const pointData: WeatherPoint = await pointResponse.json()
@@ -74,7 +65,7 @@ export async function Weather({ city, unit }: WeatherProps) {
             </div>
           )
         ))}      
-    </div>
+      </div>
     </div>
   );
 }
