@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Cloud, Sun, Droplets, Wind, ChevronDown, ChevronUp } from 'lucide-react'
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
 interface WeatherProps {
   city: string;
@@ -39,12 +41,12 @@ interface Forecast {
 export async function Weather({ city, unit }: WeatherProps) {
   const [useCelsius, setUseCelsius] = useState(false);
   const [showFullForecast, setShowForecast] = useState(false);
-  const [forecastButton, setForecastButton ] = useState(true);
   const [forecastDays, setForecastDays] = useState(2);
   const getLatLong = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
   const getLatLongData = await getLatLong.json()
   const lat = getLatLongData[0].lat;
   const long = getLatLongData[0].lon;
+  // If you get rate limited try hardcoding in Austin // const lat = 30.2672; // const long = -97.7431;
   const pointResponse = await fetch(`https://api.weather.gov/points/${lat},${long}`)
   if (!pointResponse.ok) throw new Error('Failed to fetch weather point')
   const pointData: WeatherPoint = await pointResponse.json()
@@ -56,14 +58,28 @@ export async function Weather({ city, unit }: WeatherProps) {
   }
   const handleClick = () => {
     setShowForecast(true);
-    setForecastButton(false);
     setForecastDays(8);
-    console.log('click');
   }
+
+  const handleConvert = () => {
+    setUseCelsius(!useCelsius);
+  }
+  const convertToCelsius = (current: number) => {
+    return Math.round((current - 32) * 5 / 9);
+  };
 
   return (
     <div className="min-w-full mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg overflow-hidden" key={`${city}-${unit}`}>
         <h2 className="text-4xl font-bold text-white text-center pt-8">{city}</h2>
+        <div className="flex items-center space-x-2 text-white justify-center mt-3">
+          <Label className={`text-sm ${!useCelsius ? 'font-bold' : ''}`}>°F</Label>
+          <Switch
+            id="temp-switch"
+            checked={useCelsius}
+            onCheckedChange={handleConvert}
+          />
+          <Label className={`text-sm ${useCelsius ? 'font-bold' : ''}`}>°C</Label>
+        </div>
         {forecastData.properties.periods.map((day, index) => (
           index % 2 === 0 && (index < forecastDays) && (
             <div key={index} className="px-6 py-8">
@@ -72,7 +88,7 @@ export async function Weather({ city, unit }: WeatherProps) {
                   <p className="text-lg font-semibold text-white mt-1">{formatDate(day.startTime)}</p>
                   <p className="text-blue-100 mt-1">{day.shortForecast}</p>
                 </div>
-                <div className="text-6xl font-bold text-white">{day.temperature}°{day.temperatureUnit}</div>
+                <div className="text-6xl font-bold text-white">{useCelsius ? convertToCelsius(day.temperature) : day.temperature}°{day.temperatureUnit}</div>
               </div>
               <div className="mt-6 flex justify-between text-blue-100">
                 <div className="flex items-center">
@@ -84,7 +100,7 @@ export async function Weather({ city, unit }: WeatherProps) {
                   <span>Wind: {day.windSpeed}</span>
                 </div>
               </div>
-              {forecastButton && (
+              {!showFullForecast && (
                 <div className="flex flex-row items-center justify-center pt-10 text-white">
                   <button className="text-sm font-semibold" onClick={handleClick}>Show Complete Forecast</button> 
                   <ChevronDown size={20} />
