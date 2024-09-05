@@ -70,7 +70,7 @@ export default function Chat() {
                   <IconArrowUp />
                 </Button>
               </div>
-              {messages.length > 2 && (
+              {messages.length > 1 && (
                 <div className="text-center">
                   <Link href="/genui" className="text-xs text-blue-400">Try GenUI and streaming components &rarr;</Link>
                 </div>
