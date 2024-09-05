@@ -36,9 +36,13 @@ export default function GenUI() {
         )}
         {conversation.map((message, index) => (
           <div key={index} className="whitespace-pre-wrap flex mb-5">
-            <div className={`${message.role === 'user' ? 'bg-slate-200 ml-auto' : 'bg-transparent'} p-2 rounded-lg`}>
-              {message.content as string}
-              {message.display}
+            <div className={`${message.role === 'user' ? 'bg-slate-200 ml-auto' : 'bg-transparent w-full'} p-2 rounded-lg`}>
+              <div>
+                {message.content as string}
+              </div>
+              <div>
+                {message.display}
+              </div>
             </div>
           </div>
         ))}
