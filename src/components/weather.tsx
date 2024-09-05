@@ -40,10 +40,13 @@ export async function Weather({ city, unit }: WeatherProps) {
   const [useCelsius, setUseCelsius] = useState(false);
   const [showFullForecast, setShowForecast] = useState(false);
   const [forecastButton, setForecastButton ] = useState(true);
-  const getLatLong = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
-  const getLatLongData = await getLatLong.json()
-  const lat = getLatLongData[0].lat;
-  const long = getLatLongData[0].lon;
+  const [forecastDays, setForecastDays] = useState(2);
+  // const getLatLong = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
+  // const getLatLongData = await getLatLong.json()
+  // const lat = getLatLongData[0].lat;
+  // const long = getLatLongData[0].lon;
+  const lat = 30.2672;
+  const long = -97.7431;
   const pointResponse = await fetch(`https://api.weather.gov/points/${lat},${long}`)
   if (!pointResponse.ok) throw new Error('Failed to fetch weather point')
   const pointData: WeatherPoint = await pointResponse.json()
@@ -56,18 +59,19 @@ export async function Weather({ city, unit }: WeatherProps) {
   const handleClick = () => {
     setShowForecast(true);
     setForecastButton(false);
+    setForecastDays(8);
     console.log('click');
   }
 
   return (
-    <div className="max-w-md mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg overflow-hidden" key={`${city}-${unit}`}>
+    <div className="min-w-full mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg overflow-hidden" key={`${city}-${unit}`}>
         <h2 className="text-4xl font-bold text-white text-center pt-8">{city}</h2>
         {forecastData.properties.periods.map((day, index) => (
-          index % 2 === 0 && (
+          index % 2 === 0 && (index < forecastDays) && (
             <div key={index} className="px-6 py-8">
               <div className="flex items-center justify-between gap-10">
                 <div>
-                  <p className="text-md font-semibold text-blue-100 mt-1">{formatDate(day.startTime)}</p>
+                  <p className="text-lg font-semibold text-white mt-1">{formatDate(day.startTime)}</p>
                   <p className="text-blue-100 mt-1">{day.shortForecast}</p>
                 </div>
                 <div className="text-6xl font-bold text-white">{day.temperature}°{day.temperatureUnit}</div>
@@ -84,7 +88,7 @@ export async function Weather({ city, unit }: WeatherProps) {
               </div>
               {forecastButton && (
                 <div className="flex flex-row items-center justify-center pt-10 text-white">
-                  <button className="text-sm font-semibold" onClick={handleClick}>Show 7 Complete Forecast</button> 
+                  <button className="text-sm font-semibold" onClick={handleClick}>Show Complete Forecast</button> 
                   <ChevronDown size={20} />
                 </div>
               )}
