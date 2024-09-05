@@ -88,7 +88,7 @@ export async function Weather({ city, unit }: WeatherProps) {
                   <p className="text-lg font-semibold text-white mt-1">{formatDate(day.startTime)}</p>
                   <p className="text-blue-100 mt-1">{day.shortForecast}</p>
                 </div>
-                <div className="text-6xl font-bold text-white">{useCelsius ? convertToCelsius(day.temperature) : day.temperature}°{day.temperatureUnit}</div>
+                <div className="text-6xl font-bold text-white">{useCelsius ? convertToCelsius(day.temperature) : day.temperature}°{useCelsius ? "C" : "F"}</div>
               </div>
               <div className="mt-6 flex justify-between text-blue-100">
                 <div className="flex items-center">
