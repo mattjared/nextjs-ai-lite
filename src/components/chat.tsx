@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { IconArrowUp } from '@/components/ui/icons';
 import  Link from "next/link";
 import AboutCard from "@/components/cards/aboutcard";
+import ReactMarkdown from 'react-markdown';
 export const maxDuration = 30;
 
 export default function Chat() {
@@ -46,7 +47,7 @@ export default function Chat() {
           {messages.map((message, index) => (
             <div key={index} className="whitespace-pre-wrap flex mb-5">
               <div className={`${message.role === 'user' ? 'bg-slate-200 ml-auto' : 'bg-transparent'} p-2 rounded-lg`}>
-                {message.content as string}
+                <ReactMarkdown>{message.content as string}</ReactMarkdown>
               </div>
             </div>
           ))}
